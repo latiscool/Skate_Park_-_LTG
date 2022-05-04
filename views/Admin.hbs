@@ -1,0 +1,59 @@
+   <h1>Skate Park</h1>
+
+    <div class="py-4">
+      <h2>Administración</h2>
+      <hr class="w-50" />
+
+      <table class="table w-50 m-auto">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">Foto</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Años de experiencia</th>
+            <th scope="col">Especialidad</th>
+            <th scope="col">Estado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{!-- //El helper #each nos ayuda a iterar el arrelgo de usuario --}}
+
+          {{#each usuarios}}
+          <tr> <!--tr es filas-->
+            <!--td es columnas-->
+            <td>{{ this.id }}</td>
+           <td><img src="/uploads/{{this.foto}}" alt="{{this.nombre}}" width="85" height="85" style="vertical-align:middle"></td>
+            <td>{{ this.nombre }}</td>
+            <td>{{ this.anos_experiencia }}</td>
+            <td>{{ this.especialidad }}</td>
+             <td><input type="checkbox" {{#if this.estado}} checked {{/if}} onclick="changeStatus({{this.id}}, this)" ></td>
+
+          </tr>
+       {{/each}}
+          
+        </tbody>
+      </table>
+       <p> ir a Registro <a href="/registro">Registro</a></p>
+         <p> ir a Login <a href="/login">Login</a></p>
+    </div>
+
+<script>
+
+const changeStatus= async(id,e)=>{
+//Variable auth almacenera el valor del atributo checked de la e, (e, esel elemento correspondiente al argumento this)
+  const auth=e.checked;
+try{
+      await axios.put('/usuarios', {
+        id,
+        auth,
+     })
+  alert(auth ? "Usuario habilitado para subir fotos" : "Usuario deshabilitado para subir fotos");
+  }
+    catch ({response}){
+    const { data }= response;
+    const { error }=data;
+    alert( error );
+  }
+}
+
+</script>

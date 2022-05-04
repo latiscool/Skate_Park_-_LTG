@@ -1,0 +1,43 @@
+<div class="py-5">
+  <h1>Iniciar Sesión</h1>
+  <hr class="w-50 mx-auto" />
+
+  <div class="form-group">
+    <div class="form-group mb-3">
+      <label for="email" class="mb-2">Email</label>
+      <input id="email" name="email" class="form-control w-50 mx-auto" />
+    </div>
+    <div class="form-group mb-3">
+      <label for="password" class="mb-2">Password</label>
+      <input type="password" id="password" name="password" class="form-control w-50 mx-auto" />
+    </div>
+  </div>
+  <button class="btn btn-success mb-3" onclick='verificacion()'>Ingresar</button>
+  <p>¿Aún no tienes cuenta? <a href="/registro">Regístrate</a></p>
+  <a href="/">Lista de participantes</a>
+  <p> Autorizar Usuarios <a href="/Admin">Panel Admin</a></p>
+
+  
+</div>
+
+<script>
+  const verificacion = async () => {
+    const email = $('#email').val();
+    const password = $('#password').val();
+    const payload = { email, password }
+
+    try {
+      const { data } = await axios.post('/verify', payload);
+      alert(`Autenticación exitosa!`)
+      window.location.href = `/datos?token=${data}`
+
+    } catch ({ response }) {
+      const { data } = response
+      const { error } = data
+      alert(error)
+    }
+  }
+</script>
+
+
+  
