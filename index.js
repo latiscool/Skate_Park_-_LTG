@@ -106,7 +106,7 @@ app.post('/usuarios', async (req, res) => {
   const { email, nombre, pwd1, exp, esp } = req.body;
   // console.log('req.body', req.body);
   const { foto } = req.files; //de files extraemos lo que se carga (el fichero) en el input con el name=foto
-  //  Evitar que se sobrescriban las fotos de perfil
+  //  Evitar que se sobrescriban las fotos de perfil - se crea un ID mas nombre del archivo que sera el nombre del usuario
   const idFoto = uuidv4().slice(0, 8);
   const fotoPerfil = `${nombre}-${idFoto}`;
 
@@ -125,7 +125,7 @@ app.post('/usuarios', async (req, res) => {
   }
 });
 
-//PUT - Autoriza usuario y desAutorizar
+//PUT - Autoriza usuario y desAutorizar / En Panel de Amdmin (casilla s/c ticket)
 app.put('/usuarios', async (req, res) => {
   try {
     const { id, auth } = req.body;
@@ -141,6 +141,7 @@ app.put('/usuarios', async (req, res) => {
   }
 });
 
+//POST - En Login Valida al usuario
 app.post('/verify', async (req, res) => {
   const { email, password } = req.body;
   const usuario = await loginUsuario(email, password);
@@ -174,6 +175,8 @@ app.post('/verify', async (req, res) => {
   }
 });
 
+
+//GET - Datos Perfil Visualizar
 app.get('/datos', async (req, res) => {
   const { token } = req.query;
   jwt.verify(token, secretKey, (err, decoded) => {
@@ -202,6 +205,7 @@ app.get('/datos', async (req, res) => {
   });
 });
 
+//PUT - Actualizar Datos de Perfil
 app.put('/update', async (req, res) => {
   const { email, nombre, password, experiencia, especialidad } = req.body;
   console.log('update', req.body);
@@ -222,6 +226,7 @@ app.put('/update', async (req, res) => {
   }
 });
 
+//DELETE - Eliminar Usuario
 app.delete('/delete/:email', async (req, res) => {
   const { email } = req.params;
 
